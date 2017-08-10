@@ -1,20 +1,10 @@
-array_fibonacci = []
+array_fibonacci = [0, 1]
+fibonacci = 0
+max = 100
 
-random_num = Random.new
-
-def formula(n)
-  if n >= 3
-    formula(n - 1) + formula(n - 2)
-  else
-    1
-  end
-end
-
-n = 1
-
-until formula(n) > random_num.rand(100..10_000)
-  array_fibonacci << formula(n)
-  n += 1
+until fibonacci > max
+  fibonacci = array_fibonacci[-1] + array_fibonacci[-2]
+  array_fibonacci << fibonacci if fibonacci <= max
 end
 
 puts array_fibonacci
