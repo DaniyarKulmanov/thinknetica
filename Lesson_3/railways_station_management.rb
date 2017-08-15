@@ -1,33 +1,26 @@
 # Railways station
 class Station
-  attr_reader :name
-  attr_reader :trains
-  attr_accessor :parked
+  attr_reader :station_name
 
-  def initialize(name)
-    @name = name
-    @parked = ''
-    @trains = {}
+  def initialize(station_name)
+    @station_name = station_name
+    @trains = []
   end
 
-  def arrival(codename, type, wagons)
-    train = { type: type, wagons: wagons }
-    @trains[codename] = train
-    if @parked.empty?
-      @parked = codename
-    else
-      puts "Rejected, there is a parked train #{@parked}"
+  def trains_by_type
+    @trains.each do |train|
+      puts "#{train.attributes[:codename]} type #{train.attributes[:type]}"
     end
   end
 
-  def departure
-    if @parked != ''
-      @trains.delete(@parked)
-      puts "Train #{@parked} is departured"
-      @parked = ''
-    else
-      puts 'No train to departure!'
-    end
+  def arrival(train)
+    @trains << train
+    puts "#{train.attributes[:codename]}, arrived"
+  end
+
+  def departure(train)
+    @trains.delete(train)
+    puts "#{train.attributes[:codename]}, departed"
   end
 end
 
@@ -58,50 +51,51 @@ end
 
 # Railway train
 class Train
-  attr_reader :train
+  attr_reader :attributes
+
   def initialize(codename, type, wagons)
-    @train = { codename: codename, type: type, wagons: wagons, speed: 0 }
+    @attributes = { codename: codename, type: type, wagons: wagons, speed: 0 }
   end
 
   def current_speed
-    puts "Current speed is #{@train[:speed]}"
+    puts "Current speed is #{@attributes[:speed]}"
   end
 
   def speed_up(value)
-    @train[:speed] += value
+    @attributes[:speed] += value
     current_speed
   end
 
   def full_stop
-    @train[:speed] = 0
+    @attributes[:speed] = 0
     current_speed
   end
 
   def wagons(wagons)
-    if @train[:speed] != 0
+    if @attributes[:speed] != 0
       puts 'Stop train first'
       current_speed
     else
-      @train[:wagons] += wagons.to_i
+      @attributes[:wagons] += wagons.to_i
     end
   end
 
-  def add_route(route)
-    if @train[:route].nil?
-       @train[:route] = route
-       @train[:current_route] = route.stations[0]
-    end
-  end
-
-  def route_next
-    @train[:current_last_route] = @train[:current_route]
-    @train[:current_route] = @train[:route].stations[+1]
-    @train[:next_route] = @train[:route].stations[+2]
-  end
-
-  def route_back
-    @train[:current_last_route] = @train[:current_route]
-    @train[:current_route] = @train[:route].stations[-1]
-    @train[:next_route] = @train[:route].stations[+1]
-  end
+  # def add_route(route)
+  #   if @attributes[:route].nil?
+  #      @attributes[:route] = route
+  #      @attributes[:current_route] = route.stations[0]
+  #   end
+  # end
+  #
+  # def route_next
+  #   @train[:current_last_route] = @train[:current_route]
+  #   @train[:current_route] = @train[:route].stations[+1]
+  #   @train[:next_route] = @train[:route].stations[+2]
+  # end
+  #
+  # def route_back
+  #   @train[:current_last_route] = @train[:current_route]
+  #   @train[:current_route] = @train[:route].stations[-1]
+  #   @train[:next_route] = @train[:route].stations[+1]
+  # end
 end
