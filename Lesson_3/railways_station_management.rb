@@ -9,18 +9,18 @@ class Station
 
   def trains_by_type
     @trains.each do |train|
-      puts "#{train.attributes[:codename]} type #{train.attributes[:type]}"
+      puts "#{train.codename} type #{train.type}"
     end
   end
 
   def arrival(train)
     @trains << train
-    puts "#{train.attributes[:codename]}, arrived"
+    puts "#{train.codename}, arrived"
   end
 
   def departure(train)
     @trains.delete(train)
-    puts "#{train.attributes[:codename]}, departed"
+    puts "#{train.codename}, departed"
   end
 end
 
@@ -33,7 +33,7 @@ class Route
   end
 
   def add_route(st_middle)
-    @stations << st_middle
+    @stations.insert((@stations.length - 1), st_middle)
   end
 
   def del_route(st_del)
@@ -41,42 +41,51 @@ class Route
   end
 
   def stations_list
-    puts "First station   #{@stations[0]}"
-    @stations.each_with_index do |station, index|
-      puts "Middle stations #{station}" if index != 0 && index != 1
-    end
-    puts "Last station:   #{@stations[1]}"
+    @stations.each { |station| puts station.station_name }
   end
 end
 
 # Railway train
 class Train
-  attr_reader :attributes
+  attr_reader :codename, :type, :wagons, :speed
 
   def initialize(codename, type, wagons)
-    @attributes = { codename: codename, type: type, wagons: wagons, speed: 0 }
+    # @attributes = { codename: codename, type: type, wagons: wagons, speed: 0 }
+    @codename = codename
+    @type = type
+    @wagons = wagons
+    @speed  = 0
   end
 
   def current_speed
-    puts "Current speed is #{@attributes[:speed]}"
+    puts "Current speed is #{@speed}"
   end
 
-  def speed_up(value)
-    @attributes[:speed] += value
+  def speed_up(value) # TODO
+    @speed += value
     current_speed
   end
 
   def full_stop
-    @attributes[:speed] = 0
+    @speed = 0
     current_speed
   end
 
-  def wagons(wagons)
-    if @attributes[:speed] != 0
+  def add_wagon
+    if @speed != 0
       puts 'Stop train first'
       current_speed
     else
-      @attributes[:wagons] += wagons.to_i
+      @wagons += 1
+    end
+  end
+
+  def del_wagon
+    if @speed != 0
+      puts 'Stop train first'
+      current_speed
+    else
+      @wagons -= 1
     end
   end
 
