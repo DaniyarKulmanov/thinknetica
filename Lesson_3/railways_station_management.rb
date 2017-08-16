@@ -95,36 +95,50 @@ class Train
 
   def add_route(route)
     @route = route
-    @station = 0
+    @station_index = 0
   end
 
   def move_forward
-    if @route.stations[@station].nil? && @route.nil?
+    if @route.stations[@station_index].nil? && @route.nil?
       puts 'No route or last station reached'
-    elsif !@route.stations[@station + 1].nil?
-      @station += 1
+    elsif !@route.stations[@station_index + 1].nil?
+      departure_and_arrival 1
     else
       puts 'Cannot move forward last station reached'
     end
   end
 
   def move_back
-    if @route.stations[@station].nil? && @route.nil?
+    if @route.stations[@station_index].nil? && @route.nil?
       puts 'No route or first station reached'
-    elsif !@route.stations[@station - 1].nil? && @station > 0
-      @station -= 1
+    elsif !@route.stations[@station_index - 1].nil? && @station_index > 0
+      departure_and_arrival -1
     else
       puts 'Cannot move back first station reached'
     end
   end
 
   def current_station
-    puts "Last station = #{@route.stations[@station - 1].name}" if @station > 0
-    puts "Current station = #{@route.stations[@station].name}"
-    if !@route.stations[@station + 1].nil?
-      puts "Next station = #{@route.stations[@station + 1].name}"
+    @route.stations[@station_index].name
+  end
+
+  def next_station
+    @route.stations[@station_index + 1].name unless @route.stations[@station_index + 1].nil?
+  end
+
+  def previous_station
+    @route.stations[@station_index - 1].name if @station_index > 0
+  end
+
+  private
+
+  def departure_and_arrival(n)
+    @route.stations[@station_index].departure(self)
+    if n > 0
+      @station_index += 1
     else
-      puts 'No next station'
+      @station_index -= 1
     end
+    @route.stations[@station_index].arrival(self)
   end
 end
