@@ -8,10 +8,10 @@ class Station
   end
 
   def trains(type)
-    if @trains.nil?
+    if @trains.empty?
       puts 'No trains in station'
     else
-      @trains.select{ |train| train.type == type }
+      @trains.select { |train| train.type == type }
     end
   end
 
@@ -119,26 +119,26 @@ class Train
   end
 
   def current_station
-    @route.stations[@station_index].name
+    station(@station_index)
   end
 
   def next_station
-    @route.stations[@station_index + 1].name unless @route.stations[@station_index + 1].nil?
+    station(@station_index + 1)
   end
 
   def previous_station
-    @route.stations[@station_index - 1].name if @station_index > 0
+    station(@station_index - 1) if @station_index > 0
   end
 
   private
 
   def departure_and_arrival(n)
     @route.stations[@station_index].departure(self)
-    if n > 0
-      @station_index += 1
-    else
-      @station_index -= 1
-    end
+    @station_index += n
     @route.stations[@station_index].arrival(self)
+  end
+
+  def station(index)
+    @route.stations[index]
   end
 end
