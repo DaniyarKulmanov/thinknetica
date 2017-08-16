@@ -32,7 +32,7 @@ class Route
     @stations = [st_from, st_to]
   end
 
-  def add_route(st_middle)
+  def add_station(st_middle)
     @stations.insert((@stations.length - 1), st_middle)
   end
 
@@ -50,20 +50,24 @@ class Train
   attr_reader :codename, :type, :wagons, :speed
 
   def initialize(codename, type, wagons)
-    # @attributes = { codename: codename, type: type, wagons: wagons, speed: 0 }
     @codename = codename
     @type = type
     @wagons = wagons
     @speed  = 0
+    # @route = nil
   end
 
   def current_speed
     puts "Current speed is #{@speed}"
   end
 
-  def speed_up(value) # TODO
-    @speed += value
-    current_speed
+  def speed_up(value)
+    if value >= 0
+      @speed += value
+      current_speed
+    else
+      puts 'Enter positive value'
+    end
   end
 
   def full_stop
@@ -84,27 +88,45 @@ class Train
     if @speed != 0
       puts 'Stop train first'
       current_speed
-    else
+    elsif @wagons > 0
       @wagons -= 1
+    else
+      puts 'No wagons to subtract'
     end
   end
 
-  # def add_route(route)
-  #   if @attributes[:route].nil?
-  #      @attributes[:route] = route
-  #      @attributes[:current_route] = route.stations[0]
-  #   end
-  # end
-  #
-  # def route_next
-  #   @train[:current_last_route] = @train[:current_route]
-  #   @train[:current_route] = @train[:route].stations[+1]
-  #   @train[:next_route] = @train[:route].stations[+2]
-  # end
-  #
-  # def route_back
-  #   @train[:current_last_route] = @train[:current_route]
-  #   @train[:current_route] = @train[:route].stations[-1]
-  #   @train[:next_route] = @train[:route].stations[+1]
-  # end
+  def add_route(route)
+    @route = route
+    @station = 0
+  end
+
+  def move_forward
+    if @route.stations[@station].nil? && @route.nil?
+      puts 'No route or last station reached'
+    elsif !@route.stations[@station + 1].nil?
+      @station += 1
+    else
+      puts 'Cannot move forward last station reached'
+    end
+  end
+
+  def move_back
+    if @route.stations[@station].nil? && @route.nil?
+      puts 'No route or first station reached'
+    elsif !@route.stations[@station - 1].nil? && @station > 0
+      @station -= 1
+    else
+      puts 'Cannot move back first station reached'
+    end
+  end
+
+  def current_station
+    puts "Last station = #{@route.stations[@station - 1].station_name}" if @station > 0
+    puts "Current station = #{@route.stations[@station].station_name}"
+    if !@route.stations[@station + 1].nil?
+      puts "Next station = #{@route.stations[@station + 1].station_name}"
+    else
+      puts 'No next station'
+    end
+  end
 end
