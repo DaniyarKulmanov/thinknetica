@@ -1,15 +1,17 @@
 # Railways station
 class Station
-  attr_reader :station_name
+  attr_reader :name
 
-  def initialize(station_name)
-    @station_name = station_name
+  def initialize(name)
+    @name = name
     @trains = []
   end
 
-  def trains_by_type
-    @trains.each do |train|
-      puts "#{train.codename} type #{train.type}"
+  def trains(type)
+    if @trains.nil?
+      puts 'No trains in station'
+    else
+      @trains.select{ |train| train.type == type }
     end
   end
 
@@ -41,7 +43,7 @@ class Route
   end
 
   def stations_list
-    @stations.each { |station| puts station.station_name }
+    @stations.each { |station| puts station.name }
   end
 end
 
@@ -121,10 +123,10 @@ class Train
   end
 
   def current_station
-    puts "Last station = #{@route.stations[@station - 1].station_name}" if @station > 0
-    puts "Current station = #{@route.stations[@station].station_name}"
+    puts "Last station = #{@route.stations[@station - 1].name}" if @station > 0
+    puts "Current station = #{@route.stations[@station].name}"
     if !@route.stations[@station + 1].nil?
-      puts "Next station = #{@route.stations[@station + 1].station_name}"
+      puts "Next station = #{@route.stations[@station + 1].name}"
     else
       puts 'No next station'
     end
