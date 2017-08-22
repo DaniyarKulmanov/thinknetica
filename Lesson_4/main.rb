@@ -16,19 +16,17 @@ class Action
 
   def create_station
     loop do
-      puts 'Введите название станции(как минимум две):'
-      station = gets.chomp
-      break if station == 'стоп' && @stations.length >= 1
-      @stations << Station.new(station)
+      user_input 'Введите название станции(как минимум две):'
+      break if @input == 'стоп' && @stations.length >= 1
+      @stations << Station.new(@input)
     end
   end
 
   def create_train
     loop do
-      puts 'Введите название поезда(как минимум один):'
-      train = gets.chomp
-      break if train == 'стоп'
-      @trains << Train.new(train)
+      user_input 'Введите название поезда(как минимум один):'
+      break if @input == 'стоп'
+      @trains << Train.new(@input)
     end
   end
 
@@ -41,10 +39,7 @@ class Action
     puts 'Номер конечной станции:'
     last_station = gets.chomp.to_i
     route = Route.new(@stations[first_station], @stations[last_station])
-    stations = @stations
-    stations.delete_at first_station
-    stations.delete_at (last_station - 1)
-    add_middle_stations route, stations
+    add_middle_stations route
     @routes << route
     list_routes
   end
@@ -94,7 +89,7 @@ class Action
   def all_trains_and_stations
     puts 'Список поездов:'
     list @trains
-    puts 'Список станций'
+    puts 'Список станций:'
     list @stations
   end
 
@@ -106,12 +101,15 @@ class Action
     end
   end
 
-  def add_middle_stations(route, stations)
+  def add_middle_stations(route)
+    stations = @stations
+    stations.delete_at 0
+    stations.delete_at '-1'.to_i
     loop do
       puts 'Выберите станцию:'
-      list @stations
+      list stations
       index = gets.chomp.to_i
-      route.add_station(stations[index])
+      route.add_station(stations[index]) unless stations[index].nil?
       stations.delete_at index
       break if stations.empty?
     end
@@ -122,6 +120,12 @@ class Action
       puts "Маршрут № #{index}"
       route.stations.each { |station| puts station.name }
     end
+  end
+
+  def user_input(text, array = [])
+    puts text
+    list array
+    @input = gets.chomp
   end
 
 end
