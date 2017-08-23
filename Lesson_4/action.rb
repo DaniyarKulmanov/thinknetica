@@ -113,7 +113,7 @@ class Action
   end
 
   def stations_management(route)
-    stations = @stations
+    stations = @stations.dup
     stations.delete_at 0
     stations.delete_at '-1'.to_i
     loop do
