@@ -6,11 +6,3 @@ class Wagon
     @type = type
   end
 end
-
-class PassengerWagon < Wagon
-
-end
-
-class CargoWagon < Wagon
-
-end

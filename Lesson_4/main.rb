@@ -3,6 +3,10 @@ require_relative 'station'
 require_relative 'route'
 require_relative 'wagons'
 require_relative 'action'
+require_relative 'cargo_train'
+require_relative 'cargo_wagon'
+require_relative 'passenger_train'
+require_relative 'passenger_wagon'
 
 action = Action.new
 
@@ -16,8 +20,7 @@ loop do
        '6 - Добавить отцепить вагон',
        '7 - Перемещение поезда',
        '8 - Просмотреть список станций и поездов',
-       't - Создать тестовые данные (5 станций, 2 поезда, 1 маршрут)',
-       '0 - ВЫХОД'
+       't - Создать тестовые данные (5 станций, 2 поезда, 1 маршрут)'
   command = gets.chomp
   break if command == '0'
 

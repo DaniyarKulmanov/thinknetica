@@ -39,7 +39,6 @@ class Action
     last_station = gets.chomp.to_i
     route = Route.new(@stations[first_station], @stations[last_station])
     stations_management route
-    # add_middle_stations route
     @routes << route
     list_routes
   end
@@ -56,23 +55,25 @@ class Action
 
   def train_add_wagon
     user_input 'Введите номер поезда:', @trains
-    puts "Всего вагонов #{@trains[@input.to_i].wagons.length}, сколько добавить?"
+    train = @trains[@input.to_i]
+    puts "Всего вагонов #{train.wagons.length}, сколько добавить?"
     n = gets.chomp.to_i
     n.times do
-      if @trains[@input.to_i].instance_of? PassengerTrain
-        @trains[@input.to_i].add_wagon PassengerWagon.new 'PassengerWagon'
+      if train.instance_of? PassengerTrain
+        train.add_wagon PassengerWagon.new 'PassengerWagon'
       else
-        @trains[@input.to_i].add_wagon CargoWagon.new 'CargoWagon'
+        train.add_wagon CargoWagon.new 'CargoWagon'
       end
     end
   end
 
   def train_del_wagon
     user_input 'Введите номер поезда:', @trains
-    puts "Всего вагонов #{@trains[@input.to_i].wagons.length}, сколько удалить?"
+    train = @trains[@input.to_i]
+    puts "Всего вагонов #{train.wagons.length}, сколько удалить?"
     n = gets.chomp.to_i
     n.times do
-      @trains[@input.to_i].del_wagon @trains[@input.to_i].wagons.last
+      train.del_wagon train.wagons.last
     end
   end
 
@@ -80,8 +81,9 @@ class Action
     puts 'Введите номер поезда:'
     list @trains
     index = gets.chomp.to_i
-    @trains[index].speed_up
-    @trains[index].move_forward
+    train = @trains[index]
+    train.speed_up
+    train.move_forward
   end
 
   def all_trains_and_stations
@@ -121,10 +123,11 @@ class Action
       break if @input == 'стоп'
       puts '1 - добавить стнацию', '2 - удалить станцию'
       operation = gets.chomp.to_i
+      station = stations[@input.to_i]
       if operation == 1
-        route.add_station(stations[@input.to_i]) unless stations[@input.to_i].nil?
+        route.add_station(station) unless station.nil?
       elsif operation == 2
-        route.del_station(stations[@input.to_i]) unless stations[@input.to_i].nil?
+        route.del_station(station) unless station.nil?
       else
         puts 'Введите 1 или 2'
         next
