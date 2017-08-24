@@ -2,6 +2,7 @@ require_relative 'wagons'
 require_relative 'produce_company'
 # Railway train
 class Train
+  @@trains = []
   attr_reader :name, :wagons, :speed, :number
   include ProduceCompany
 
@@ -10,6 +11,7 @@ class Train
     @wagons = []
     @speed  = 0
     @number = number
+    @@trains << self
   end
 
   def add_route(route)
@@ -60,6 +62,10 @@ class Train
 
   def previous_station
     station(@station_index - 1) if @station_index > 0
+  end
+
+  def self.find(number)
+    puts (@@trains.select { |train| train.number == number })
   end
 
   protected
