@@ -1,10 +1,12 @@
 # Railways station
 class Station
+  @@stations = []
   attr_reader :name
 
   def initialize(name)
     @name = name
     @trains = []
+    @@stations << self
   end
 
   def trains(type)
@@ -23,5 +25,11 @@ class Station
   def departure(train)
     @trains.delete(train)
     puts "#{train.name}, departed from station #{@name}"
+  end
+
+  class << self
+    def all
+      @@stations
+    end
   end
 end
