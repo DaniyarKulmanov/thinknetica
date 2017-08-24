@@ -4,10 +4,11 @@ require_relative 'InstanceCounter'
 class Wagon
   attr_reader :type
   include ProduceCompany
-  extend InstanceCounter
+  include InstanceCounter
 
   def initialize(type)
     @type = type
     Wagon.count
+    register_instance
   end
 end
