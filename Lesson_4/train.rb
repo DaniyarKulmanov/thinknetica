@@ -2,13 +2,14 @@ require_relative 'wagons'
 require_relative 'produce_company'
 # Railway train
 class Train
-  attr_reader :name, :wagons, :speed
+  attr_reader :name, :wagons, :speed, :number
   include ProduceCompany
 
-  def initialize(name)
+  def initialize(name, number)
     @name = name
     @wagons = []
     @speed  = 0
+    @number = number
   end
 
   def add_route(route)
