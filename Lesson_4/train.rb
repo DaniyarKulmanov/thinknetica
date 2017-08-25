@@ -5,6 +5,8 @@ class Train
   @@trains = []
   attr_reader :name, :wagons, :speed, :number
   include ProduceCompany
+  include InstanceCounter
+  @count = 0
 
   def initialize(name, number)
     @name = name
@@ -12,6 +14,7 @@ class Train
     @speed  = 0
     @number = number
     @@trains << self
+    register_instance
   end
 
   def add_route(route)
