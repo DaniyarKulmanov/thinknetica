@@ -6,7 +6,7 @@ class Train
   attr_reader :name, :wagons, :speed, :number
   include ProduceCompany
   include InstanceCounter
-  @count = 0
+  count_initialize
 
   def initialize(name, number)
     @name = name
