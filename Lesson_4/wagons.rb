@@ -5,7 +5,6 @@ class Wagon
   attr_reader :type
   include ProduceCompany
   include InstanceCounter
-  count_initialize
 
   def initialize(type)
     @type = type
