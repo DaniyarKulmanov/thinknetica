@@ -7,11 +7,15 @@ class Train
   include ProduceCompany
   include InstanceCounter
 
+  NAME_FORMAT = /^\S[\d a-z A-Z]*$/i
+  NUMBER_FORMAT = /^[\d a-z A-Z]{3}[_-]?[\d a-z A-Z]{2}$/i
+
   def initialize(name, number)
     @name = name
+    @number = number
+    validate!
     @wagons = []
     @speed  = 0
-    @number = number
     @@trains << self
     register_instance
   end
@@ -84,6 +88,12 @@ class Train
     @speed += n if (@speed + n) <= max_speed && (@speed + n) >= 0
   end
 
+  def valid?
+    validate!
+  rescue
+    false
+  end
+
   private
 
   # DRY move_forward / move_back
@@ -101,4 +111,13 @@ class Train
   def station(index)
     @route.stations[index]
   end
+
+  protected
+
+  def validate!
+    raise 'Train name invalid format' if @name !~ NAME_FORMAT
+    raise 'Train number invalid format!' if @number !~ NUMBER_FORMAT
+    true
+  end
+
 end
