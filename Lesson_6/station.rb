@@ -14,7 +14,7 @@ class Station
 
   def trains(type)
     if @trains.empty?
-      puts 'No trains in station'
+      nil
     else
       @trains.select { |train| train.type == type }
     end
@@ -22,12 +22,10 @@ class Station
 
   def arrival(train)
     @trains << train
-    puts "#{train.name}, arrived at station #{@name}"
   end
 
   def departure(train)
     @trains.delete(train)
-    puts "#{train.name}, departed from station #{@name}"
   end
 
   class << self
