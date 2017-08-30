@@ -1,5 +1,6 @@
 require_relative 'wagons'
 require_relative 'produce_company'
+
 # Railway train
 class Train
   @@trains = []
@@ -115,8 +116,8 @@ class Train
   protected
 
   def validate!
-    raise 'Train name invalid format' if @name !~ NAME_FORMAT
-    raise 'Train number invalid format!' if @number !~ NUMBER_FORMAT
+    raise 'Имя поезда не верный формат' if @name !~ NAME_FORMAT
+    raise 'Номер поезда не верный формат' if @number !~ NUMBER_FORMAT
     true
   end
 
