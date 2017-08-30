@@ -7,7 +7,6 @@ class Station
 
   def initialize(name)
     @name = name
-    validate!
     @trains = []
     @@stations << self
   end
@@ -34,18 +33,5 @@ class Station
     def all
       @@stations
     end
-  end
-
-  def valid?
-    validate!
-  rescue
-    false
-  end
-
-  private
-
-  def validate!
-    raise 'Station invalid format' if @name !~ STATION_FORMAT
-    true
   end
 end
