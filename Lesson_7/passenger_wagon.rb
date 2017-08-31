@@ -5,34 +5,30 @@ class PassengerWagon < Wagon
   attr_reader :seats_all
 
   def initialize(seats)
-    @seats = seats
-    begin
-      super 'Passenger'
-    rescue RuntimeError
-      raise 'Seats must be a number'
-    end
-    @seats_all = { free: seats, occupied: 0 }
+    @seats_all = seats
+    super 'Passenger'
+    @seats_occupied = 0
   end
 
   def occupy_seat
-    return if @seats_all[:free] <= 0
-    @seats_all[:free] -= 1
-    @seats_all[:occupied] += 1
+    return if @seats_all <= 0
+    @seats_all -= 1
+    @seats_occupied += 1
   end
 
   def occupied_seats
-    @seats_all[:occupied]
+    @seats_occupied
   end
 
   def free_seats
-    @seats_all[:free]
+    @seats_all
   end
 
   private
 
   def validate! # TODO: create validate module and include in classes
     super
-    raise RuntimeError if @seats.class != Integer
+    raise 'Seats must be a number' if @seats_all.class != Integer
     true
   end
 

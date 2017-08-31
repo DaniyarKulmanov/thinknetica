@@ -29,7 +29,7 @@ class Station
   end
 
   # station1.information { |train| puts train.name }
-  def information
+  def each_train
     if block_given?
       @trains.each do |train|
         yield train

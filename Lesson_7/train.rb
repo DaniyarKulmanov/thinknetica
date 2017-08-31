@@ -77,7 +77,7 @@ class Train
   end
 
   # train1.information { |train| puts train.name }
-  def information
+  def each_wagon
     if block_given?
       @wagons.each do |wagon|
         yield wagon
