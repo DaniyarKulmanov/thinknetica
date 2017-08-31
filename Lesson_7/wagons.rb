@@ -1,6 +1,6 @@
 require_relative 'produce_company'
 require_relative 'InstanceCounter'
-# Класс вагоны
+# wagons class
 class Wagon
   attr_accessor :type
   include ProduceCompany
