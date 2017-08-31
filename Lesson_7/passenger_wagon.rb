@@ -4,10 +4,10 @@ require_relative 'wagons'
 class PassengerWagon < Wagon
   attr_reader :seats_all
 
-  def initialize(type, seats)
+  def initialize(seats)
     @seats = seats
     begin
-      super type
+      super 'Passenger'
     rescue RuntimeError
       raise 'Seats must be a number'
     end
