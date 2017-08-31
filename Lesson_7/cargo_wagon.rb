@@ -20,11 +20,11 @@ class CargoWagon < Wagon
   end
 
   def occupied_volume
-    puts "Occupied seats: #{@volume_all[:occupied]}"
+    @volume_all[:occupied]
   end
 
   def free_volume
-    puts "Free seats: #{@volume_all[:free]}"
+    @volume_all[:free]
   end
 
   private

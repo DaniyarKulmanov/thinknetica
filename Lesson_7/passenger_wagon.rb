@@ -21,11 +21,11 @@ class PassengerWagon < Wagon
   end
 
   def occupied_seats
-    puts "Occupied seats: #{@seats_all[:occupied]}"
+    @seats_all[:occupied]
   end
 
   def free_seats
-    puts "Free seats: #{@seats_all[:free]}"
+    @seats_all[:free]
   end
 
   private
