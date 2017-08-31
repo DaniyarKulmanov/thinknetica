@@ -24,8 +24,8 @@ class Route
   private
 
   def validate!
-    raise 'Fill first station' if @stations[0].empty?
-    raise 'Fill last stations' if @stations[-1].empty?
+    raise 'First station, must be Station object' if @stations[0].class != Station
+    raise 'Last station, must be Station object' if @stations[-1].class != Station
     true
   end
 

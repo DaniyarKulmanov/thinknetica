@@ -28,6 +28,17 @@ class Station
     @trains.delete(train)
   end
 
+  # station1.information { |train| puts train.name }
+  def information
+    if block_given?
+      @trains.each do |train|
+        yield train
+      end
+    else
+      puts 'No block given'
+    end
+  end
+
   class << self
     def all
       @@stations

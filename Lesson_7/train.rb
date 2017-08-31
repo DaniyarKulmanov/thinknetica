@@ -24,6 +24,7 @@ class Train
   def add_route(route)
     @route = route
     @station_index = 0
+    @route.stations[@station_index].arrival(self)
   end
 
   def speed_up
