@@ -76,6 +76,17 @@ class Train
     puts (@@trains.select { |train| train.number == number })
   end
 
+  # train1.information { |train| puts train.name }
+  def information
+    if block_given?
+      @wagons.each do |wagon|
+        yield wagon
+      end
+    else
+      puts 'No block given'
+    end
+  end
+
   protected
 
   # все поезда имеют максимальную скорость
