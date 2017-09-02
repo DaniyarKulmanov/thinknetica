@@ -3,13 +3,19 @@ require_relative 'produce_company'
 
 # Railway train
 class Train
-  @@trains = []
-  attr_reader :name, :wagons, :speed, :number
   include ProduceCompany
   include InstanceCounter
 
-  NAME_FORMAT = /^\S[\d a-z A-Z]*$/i
-  NUMBER_FORMAT = /^[\d a-z A-Z]{3}[_-]?[\d a-z A-Z]{2}$/i
+  NAME_FORMAT = /^\S[\d a-zA-Z]*$/i
+  NUMBER_FORMAT = /^[\d a-zA-Z]{3}[_-]?[\d a-zA-Z]{2}$/i
+
+  class << self; attr_accessor :trains end
+  @trains = []
+  attr_reader :name, :wagons, :speed, :number
+
+  def self.find(number)
+    puts(trains.select { |train| train.number == number })
+  end
 
   def initialize(name, number)
     @name = name
@@ -17,7 +23,7 @@ class Train
     validate!
     @wagons = []
     @speed  = 0
-    @@trains << self
+    self.class.trains << self
     register_instance
   end
 
@@ -72,11 +78,6 @@ class Train
     station(@station_index - 1) if @station_index > 0
   end
 
-  def self.find(number)
-    puts (@@trains.select { |train| train.number == number })
-  end
-
-  # train1.information { |train| puts train.name }
   def each_wagon
     if block_given?
       @wagons.each do |wagon|
@@ -89,13 +90,10 @@ class Train
 
   protected
 
-  # все поезда имеют максимальную скорость
   def max_speed
     70
   end
 
-  # DRY для публичных методов speed_up / speed_down
-  # Пассажирский и грузовые поезда набирают скорость по разному
   def speed!(modifier)
     n = 10 * modifier
     @speed += n if (@speed + n) <= max_speed && (@speed + n) >= 0
@@ -109,8 +107,6 @@ class Train
 
   private
 
-  # DRY move_forward / move_back
-  # Принцип перемещения между станциями у поездов одинаков
   def departure_and_arrival(n)
     return if @route.nil?
     return if @speed.zero?
@@ -119,18 +115,13 @@ class Train
     @route.stations[@station_index].arrival(self)
   end
 
-  # DRY для публичных методов *_station
-  # Индекс станции есть у всех поездов
   def station(index)
     @route.stations[index]
   end
-
-  protected
 
   def validate!
     raise 'Имя поезда не верный формат' if @name !~ NAME_FORMAT
     raise 'Номер поезда не верный формат' if @number !~ NUMBER_FORMAT
     true
   end
-
 end

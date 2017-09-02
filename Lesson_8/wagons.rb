@@ -1,12 +1,13 @@
 require_relative 'produce_company'
-require_relative 'InstanceCounter'
-# Класс вагоны
+require_relative 'instance_counter'
+# Wagon class
 class Wagon
-  attr_accessor :type
   include ProduceCompany
   include InstanceCounter
 
   WAGON_TYPE = /Passenger|Cargo/
+
+  attr_accessor :type
 
   def initialize(type)
     @type = type

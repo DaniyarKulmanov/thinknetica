@@ -31,5 +31,4 @@ class PassengerWagon < Wagon
     raise 'Seats must be a number' if @seats_all.class != Integer
     true
   end
-
 end

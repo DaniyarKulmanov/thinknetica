@@ -38,7 +38,8 @@ trains.each { |train| train.add_route routes[0] }
 
 puts "Passenger trains at station #{stations[0].name}"
 stations[0].each_train do |train|
-  puts "Train name:#{train.name}, number:#{train.number}, wagons:#{train.wagons.size}"
+  puts "Train name:#{train.name}, number:#{train.number},
+        wagons:#{train.wagons.size}"
 end
 
 n = 0
@@ -46,7 +47,9 @@ puts '============================================='
 puts "Train #{trains[0].name} wagons information:"
 trains[0].each_wagon do |wagon|
   n += 1
-  puts " Number-#{n}, type-#{wagon.type}, occupied seats:#{wagon.occupied_seats}, free seats:#{wagon.free_seats},"
+  puts " Number-#{n}, type-#{wagon.type},
+         occupied seats:#{wagon.occupied_seats},
+         free seats:#{wagon.free_seats},"
 end
 
 n = 0
@@ -54,6 +57,7 @@ puts '============================================='
 puts "Train #{trains[1].name} wagons information:"
 trains[1].each_wagon do |wagon|
   n += 1
-  puts " Number-#{n}, type-#{wagon.type}, occupied volume:#{wagon.occupied_volume}, free volume:#{wagon.free_volume},"
+  puts " Number-#{n}, type-#{wagon.type},
+         occupied volume:#{wagon.occupied_volume},
+         free volume:#{wagon.free_volume},"
 end
-

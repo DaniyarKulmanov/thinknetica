@@ -33,10 +33,10 @@ class Action
 
   def create_train(name, type, number)
     if type == '1'
-      @trains << PassengerTrain.new( name, number)
+      @trains << PassengerTrain.new(name, number)
       result  @trains[-1]
     elsif type == '2'
-      @trains << CargoTrain.new( name, number)
+      @trains << CargoTrain.new(name, number)
       result  @trains[-1]
     end
   rescue RuntimeError => mistake

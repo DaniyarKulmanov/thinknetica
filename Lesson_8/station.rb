@@ -1,15 +1,16 @@
 # Railways station
 class Station
-  @@stations = []
-  attr_reader :name
-
   STATION_FORMAT = /^[A-Z][a-z]{2}$/i
+
+  class << self; attr_accessor :stations end
+  @stations = []
+  attr_reader :name
 
   def initialize(name)
     @name = name
     validate!
     @trains = []
-    @@stations << self
+    self.class.stations << self
   end
 
   def trains(type)
@@ -28,7 +29,6 @@ class Station
     @trains.delete(train)
   end
 
-  # station1.information { |train| puts train.name }
   def each_train
     if block_given?
       @trains.each do |train|
@@ -41,7 +41,7 @@ class Station
 
   class << self
     def all
-      @@stations
+      self.class.stations
     end
   end
 
