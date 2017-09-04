@@ -10,11 +10,19 @@ class Train
   NUMBER_FORMAT = /^[\d a-zA-Z]{3}[_-]?[\d a-zA-Z]{2}$/i
 
   class << self; attr_accessor :trains end
-  @trains = []
+  # @trains = []
+  self.trains = []
   attr_reader :name, :wagons, :speed, :number
 
   def self.find(number)
     puts(trains.select { |train| train.number == number })
+  end
+
+  def self.inherited(subclass)
+    subclass.singleton_class.instance_eval do
+      attr_accessor :trains
+    end
+    subclass.trains = []
   end
 
   def initialize(name, number)

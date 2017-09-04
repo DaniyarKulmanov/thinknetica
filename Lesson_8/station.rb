@@ -2,9 +2,16 @@
 class Station
   STATION_FORMAT = /^[A-Z][a-z]{2}$/i
 
-  class << self; attr_accessor :stations end
   @stations = []
   attr_reader :name
+
+  class << self
+    attr_accessor :stations
+
+    def all
+      self.class.stations
+    end
+  end
 
   def initialize(name)
     @name = name
@@ -14,10 +21,11 @@ class Station
   end
 
   def trains(type)
-    if @trains.empty?
-      nil
-    else
-      @trains.select { |train| train.type == type }
+    return nil if @trains.empty?
+    if type == 'Passenger'
+      @trains.select { |train| train.instance_of? PassengerTrain }
+    elsif type == 'Cargo'
+      @trains.select { |train| train.instance_of? CargoTrain }
     end
   end
 
@@ -36,12 +44,6 @@ class Station
       end
     else
       puts 'No block given'
-    end
-  end
-
-  class << self
-    def all
-      self.class.stations
     end
   end
 

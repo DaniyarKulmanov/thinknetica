@@ -2,6 +2,7 @@ require_relative 'train'
 
 # Cargo Trains
 class CargoTrain < Train
+  @trains = []
   def add_wagon(wagon)
     super wagon if wagon.instance_of? CargoWagon
   end
