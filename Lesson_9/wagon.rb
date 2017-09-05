@@ -1,9 +1,11 @@
 require_relative 'produce_company'
 require_relative 'instance_counter'
+require_relative 'accessors'
 # Wagon class
 class Wagon
   include ProduceCompany
   include InstanceCounter
+  include Accessors
 
   WAGON_TYPE = /Passenger|Cargo/
 

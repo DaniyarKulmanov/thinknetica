@@ -1,4 +1,4 @@
-require_relative 'wagons'
+require_relative 'wagon'
 
 # passenger wagon class
 class PassengerWagon < Wagon

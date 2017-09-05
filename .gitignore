@@ -17,6 +17,7 @@
 !/log/.keep
 !/tmp/.keep
 
+
 /node_modules
 /yarn-error.log
 
@@ -25,3 +26,5 @@
 =======
 .idea/
 .idea/workspace.xml
+
+/Lesson_9/temp.rb

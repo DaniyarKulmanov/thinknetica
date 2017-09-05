@@ -1,4 +1,4 @@
-require_relative 'wagons'
+require_relative 'wagon'
 # Cargo wagons
 class CargoWagon < Wagon
   attr_reader :volume_all

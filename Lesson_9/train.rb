@@ -1,10 +1,11 @@
-require_relative 'wagons'
+require_relative 'wagon'
 require_relative 'produce_company'
 
 # Railway train
 class Train
   include ProduceCompany
   include InstanceCounter
+  include Accessors
 
   NAME_FORMAT = /^\S[\d a-zA-Z]*$/i
   NUMBER_FORMAT = /^[\d a-zA-Z]{3}[_-]?[\d a-zA-Z]{2}$/i
