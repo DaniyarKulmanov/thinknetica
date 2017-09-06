@@ -1,10 +1,11 @@
+require_relative 'validation'
 # Railway routes
 class Route
+  include Validation
   attr_reader :stations
 
   def initialize(station_from, station_to)
     @stations = [station_from, station_to]
-    validate!
   end
 
   def add_station(station)
@@ -13,20 +14,5 @@ class Route
 
   def del_station(station)
     @stations.delete(station)
-  end
-
-  def valid?
-    validate!
-  rescue
-    false
-  end
-
-  private
-
-  def validate!
-    text = ' station, must be Station object'
-    raise 'First' + text if @stations[0].class != Station
-    raise 'Last' + text if @stations[-1].class != Station
-    true
   end
 end

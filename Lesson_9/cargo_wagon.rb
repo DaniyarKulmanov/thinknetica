@@ -22,12 +22,4 @@ class CargoWagon < Wagon
   def free_volume
     @volume_all
   end
-
-  private
-
-  def validate! # TODO: create validate module and include in classes
-    super
-    raise 'Volume must be a number' if @volume_all.class != Integer
-    true
-  end
 end

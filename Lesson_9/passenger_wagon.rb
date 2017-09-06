@@ -23,12 +23,4 @@ class PassengerWagon < Wagon
   def free_seats
     @seats_all
   end
-
-  private
-
-  def validate! # TODO: create validate module and include in classes
-    super
-    raise 'Seats must be a number' if @seats_all.class != Integer
-    true
-  end
 end

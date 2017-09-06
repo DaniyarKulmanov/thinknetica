@@ -1,17 +1,18 @@
 require_relative 'wagon'
 require_relative 'produce_company'
+require_relative 'validation'
 
 # Railway train
 class Train
   include ProduceCompany
   include InstanceCounter
   include Accessors
+  include Validation
 
   NAME_FORMAT = /^\S[\d a-zA-Z]*$/i
   NUMBER_FORMAT = /^[\d a-zA-Z]{3}[_-]?[\d a-zA-Z]{2}$/i
 
   class << self; attr_accessor :trains end
-  # @trains = []
   self.trains = []
   attr_reader :name, :wagons, :speed, :number
 
@@ -29,7 +30,7 @@ class Train
   def initialize(name, number)
     @name = name
     @number = number
-    validate!
+    # validate!
     @wagons = []
     @speed  = 0
     self.class.trains << self
@@ -108,11 +109,11 @@ class Train
     @speed += n if (@speed + n) <= max_speed && (@speed + n) >= 0
   end
 
-  def valid?
-    validate!
-  rescue
-    false
-  end
+  # def valid?
+  #   validate!
+  # rescue
+  #   false
+  # end
 
   private
 
@@ -127,10 +128,10 @@ class Train
   def station(index)
     @route.stations[index]
   end
-
-  def validate!
-    raise 'Имя поезда не верный формат' if @name !~ NAME_FORMAT
-    raise 'Номер поезда не верный формат' if @number !~ NUMBER_FORMAT
-    true
-  end
+  #
+  # def validate!
+  #   raise 'Имя поезда не верный формат' if @name !~ NAME_FORMAT
+  #   raise 'Номер поезда не верный формат' if @number !~ NUMBER_FORMAT
+  #   true
+  # end
 end

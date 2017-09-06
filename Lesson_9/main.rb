@@ -1,63 +1,118 @@
-require_relative 'station'
-require_relative 'route'
-require_relative 'passenger_train'
+require_relative 'wagon'
 require_relative 'passenger_wagon'
 require_relative 'cargo_wagon'
-require_relative 'cargo_train'
+require_relative 'station'
+require_relative 'route'
+require_relative 'train'
 
-stations = []
-trains = []
-routes = []
-wagons = []
+puts '=========================================='
+puts 'Creating simple Wagon, with wrong data'
 
-def random
-  ('A'..'Z').to_a.shuffle.join[0..2]
+def wagon_validation(object, format, type)
+  object.validate!(object.type, format, type) if object.instance_of? Wagon
+  object.validate!(object.volume_all, format, type) if object.instance_of? CargoWagon
+  object.validate!(object.seats_all, format, type) if object.instance_of? PassengerWagon
+rescue RuntimeError => e
+  puts e.message
 end
 
-2.times do
-  name = random
-  stations << Station.new(name.to_s)
+puts '1. Empty wagon type:'
+wagon = Wagon.new ' '
+wagon_validation wagon, Wagon::WAGON_TYPE, String
+
+puts '2. Wrong type format:'
+wagon.type = 'Test'
+wagon_validation wagon, Wagon::WAGON_TYPE, String
+
+puts '3. Wrong class type:'
+wagon.type = 'Cargo'.to_sym
+wagon_validation wagon, Wagon::WAGON_TYPE, String
+
+puts '=========================================='
+puts 'Creating Cargo wagon, with wrong data'
+
+puts '1. Cargo wagon volume nil:'
+wagon = CargoWagon.new ''
+wagon_validation wagon, Wagon::WAGON_TYPE, Integer
+
+puts '2. Cargo wagon volume wrong class:'
+wagon = CargoWagon.new 'Test'
+wagon_validation wagon, Wagon::WAGON_TYPE, Integer
+
+puts '=========================================='
+puts 'Creating Passenger wagon, with wrong data'
+
+puts '1. Passenger wagon seats nil:'
+wagon = PassengerWagon.new ''
+wagon_validation wagon, Wagon::WAGON_TYPE, Integer
+
+puts '2. Passenger wagon volume wrong class:'
+wagon = PassengerWagon.new 'Test'
+wagon_validation wagon, Wagon::WAGON_TYPE, Integer
+
+puts '=========================================='
+puts 'Creating Station, with wrong data'
+def station_validation(object, format, type)
+  object.validate!(object.name, format, type)
+rescue RuntimeError => e
+  puts e.message
 end
 
-name = random
-trains << PassengerTrain.new(name = name.to_s, "#{name.downcase!}-11")
-name = random
-trains << CargoTrain.new(name = name.to_s, "#{name.downcase!}-22")
-routes << Route.new(stations[0], stations[-1])
+puts '1. Station name nil:'
+station = Station.new ''
+station_validation station, Station::STATION_FORMAT, String
 
-10.times do
-  passenger_wagon = PassengerWagon.new(rand(20..30))
-  wagons << passenger_wagon
-  trains[0].add_wagon passenger_wagon
-  cargo_wagon = CargoWagon.new(rand(100..150))
-  wagons << cargo_wagon
-  trains[1].add_wagon cargo_wagon
+puts '2. Station name wrong format:'
+station = Station.new '22222'
+station_validation station, Station::STATION_FORMAT, String
+
+puts '=========================================='
+puts 'Creating Route, with wrong data'
+
+def route_validation(object, format, type, n)
+  object.validate!(object.stations[n], format, type)
+rescue RuntimeError => e
+  puts e.message
 end
 
-trains.each { |train| train.add_route routes[0] }
+puts '1. Route station nil:'
+route = Route.new '', 12
+route_validation route, Station::STATION_FORMAT, Station, 0
 
-puts "Passenger trains at station #{stations[0].name}"
-stations[0].each_train do |train|
-  puts "Train name:#{train.name}, number:#{train.number},
-        wagons:#{train.wagons.size}"
+puts '2. Route station wrong class:'
+route = Route.new station, 12
+route_validation route, Station::STATION_FORMAT, Station, -1
+
+puts '=========================================='
+puts 'Creating Train, with wrong data'
+
+def train_validation(object, format, type, var)
+  object.validate!(object.name, format, type) if var == :name
+  object.validate!(object.number, format, type) if var == :number
+rescue RuntimeError => e
+  puts e.message
 end
 
-n = 0
-puts '============================================='
-puts "Train #{trains[0].name} wagons information:"
-trains[0].each_wagon do |wagon|
-  n += 1
-  puts " Number-#{n}, type-#{wagon.type},
-         occupied seats:#{wagon.occupied_seats},
-         free seats:#{wagon.free_seats},"
-end
+puts '1. Train name nil:'
+train = Train.new '', 'SFG-28'
+train_validation train, Train::NAME_FORMAT, String, :name
 
-n = 0
-puts '============================================='
-puts "Train #{trains[1].name} wagons information:"
-trains[1].each_wagon do |wagon|
-  n += 1
-  puts " Number-#{n}, type-#{wagon.type},
-         occupied volume:#{wagon.occupied_volume},
-         free volume:#{wagon.free_volume},"
-end
+puts '2. Train name wrong format:'
+train = Train.new 33, 'SFG-28'
+train_validation train, Train::NAME_FORMAT, String, :name
+
+puts '3. Train name wrong class type:'
+train = Train.new 'KWA'.to_sym, 'SFG-28'
+train_validation train, Train::NAME_FORMAT, String, :name
+
+puts '4. Train number nil:'
+train = Train.new 'WIR', ''
+train_validation train, Train::NUMBER_FORMAT, String, :number
+
+puts '5. Train number wrong format:'
+train = Train.new 'WIR', '872'
+train_validation train, Train::NUMBER_FORMAT, String, :number
+
+puts '6. Train name wrong class type:'
+train = Train.new 'WIR', 'SFG-28'.to_sym
+train_validation train, Train::NUMBER_FORMAT, String, :number

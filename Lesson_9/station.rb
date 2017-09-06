@@ -1,5 +1,7 @@
+require_relative 'validation'
 # Railways station
 class Station
+  include Validation
   STATION_FORMAT = /^[A-Z][a-z]{2}$/i
 
   @stations = []
@@ -15,7 +17,6 @@ class Station
 
   def initialize(name)
     @name = name
-    validate!
     @trains = []
     self.class.stations << self
   end
@@ -45,18 +46,5 @@ class Station
     else
       puts 'No block given'
     end
-  end
-
-  def valid?
-    validate!
-  rescue
-    false
-  end
-
-  private
-
-  def validate!
-    raise 'Station invalid format' if @name !~ STATION_FORMAT
-    true
   end
 end
