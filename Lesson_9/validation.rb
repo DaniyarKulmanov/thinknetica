@@ -6,26 +6,28 @@ module Validation
   end
   # Class methods
   module ClassMethods
+    attr_reader :checks
+
     def validate(variable, validation, option = nil)
-      case validation
-      when :presence
-        return false if variable.nil? || variable.to_s.strip.empty?
-      when :format
-        return false if option.class != Regexp || variable !~ option
-      when :type
-        return false unless variable.class == option
+      @checks ||= {}
+      if @checks[variable].nil?
+        check ||= {}
       else
-        false
+        check = @checks[variable]
       end
-      true
+      check[validation] ||= option
+      @checks[variable] = check
     end
   end
   # Instance methods
   module InstanceMethods
-    def validate!(var, regx, type)
-      raise 'Variable nil or empty' unless self.class.validate(var, :presence)
-      raise 'Wrong format' unless self.class.validate(var, :format, regx)
-      raise 'Class type not match' unless self.class.validate(var, :type, type)
+    def validate!
+      self.class.checks.each do |var, check|
+        check.each do |validation, option|
+          # TODO: change "send" to "instance_eval"
+          raise "#{validation} error for #{var}" if send(validation, var, option)
+        end
+      end
       true
     end
 
@@ -33,6 +35,29 @@ module Validation
       validate!
     rescue
       false
+    end
+
+    private
+
+    attr_writer :validations
+
+    def presence(variable, option = nil)
+      var = get_var variable
+      var.nil? || var.to_s.strip.empty?
+    end
+
+    def format_check(variable, option)
+      var = get_var variable
+      option.class != Regexp || var !~ option
+    end
+
+    def class_type(variable, option)
+      var = get_var variable
+      var.class != option
+    end
+
+    def get_var(var)
+      instance_variable_get "@#{var}"
     end
   end
 end
