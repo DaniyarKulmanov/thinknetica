@@ -14,8 +14,8 @@ rescue RuntimeError => e
   puts e.message
 end
 Wagon.validate :type, :presence
-Wagon.validate :type, :format_check, Wagon::WAGON_TYPE
-Wagon.validate :type, :class_type, Integer
+Wagon.validate :type, :format, Wagon::WAGON_TYPE
+Wagon.validate :type, :validate_type, Integer
 
 
 puts '1. Empty wagon type:'

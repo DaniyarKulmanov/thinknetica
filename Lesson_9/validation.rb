@@ -10,22 +10,18 @@ module Validation
 
     def validate(variable, validation, option = nil)
       @checks ||= {}
-      if @checks[variable].nil?
-        check ||= {}
-      else
-        check = @checks[variable]
-      end
-      check[validation] ||= option
-      @checks[variable] = check
+      @checks[variable] ||= []
+      @checks[variable] << { validation: validation, option: option }
     end
   end
   # Instance methods
   module InstanceMethods
     def validate!
-      self.class.checks.each do |var, check|
-        check.each do |validation, option|
+      self.class.checks.each do |var, validations|
+        var = get_var(var)
+        validations.each do |validation|
           # TODO: change "send" to "instance_eval"
-          raise "#{validation} error for #{var}" if send(validation, var, option)
+          send(validation[:validation], var, validation[:option])
         end
       end
       true
@@ -39,21 +35,16 @@ module Validation
 
     private
 
-    attr_writer :validations
-
-    def presence(variable, option = nil)
-      var = get_var variable
-      var.nil? || var.to_s.strip.empty?
+    def presence(value, option = nil)
+      raise 'Field empty value or nil' if value.nil? || value.to_s.strip.empty?
     end
 
-    def format_check(variable, option)
-      var = get_var variable
-      option.class != Regexp || var !~ option
+    def format(value, option)
+      raise 'Incorrect format' if option.class != Regexp || value !~ option
     end
 
-    def class_type(variable, option)
-      var = get_var variable
-      var.class != option
+    def validate_type(value, option)
+      raise 'Incorrect type' if value.class != option
     end
 
     def get_var(var)
