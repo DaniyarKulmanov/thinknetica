@@ -13,10 +13,6 @@ def run_validation(object)
 rescue RuntimeError => e
   puts e.message
 end
-Wagon.validate :type, :presence
-Wagon.validate :type, :format, Wagon::WAGON_TYPE
-Wagon.validate :type, :validate_type, Integer
-
 
 puts '1. Empty wagon type:'
 wagon = Wagon.new ' '
@@ -27,5 +23,5 @@ wagon.type = 'Test'
 run_validation wagon
 
 puts '3. Wrong class type:'
-wagon.type = 'Cargo'
+wagon.type = 'Cargo'.to_sym
 run_validation wagon

@@ -13,6 +13,10 @@ class Wagon
 
   attr_accessor :type
 
+  validate :type, :presence
+  validate :type, :format, Wagon::WAGON_TYPE
+  validate :type, :type, String
+
   def initialize(type)
     @type = type
     register_instance
