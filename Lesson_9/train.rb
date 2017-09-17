@@ -17,7 +17,7 @@ class Train
   attr_reader :name, :wagons, :speed, :number
 
   def self.find(number)
-    puts(trains.select { |train| train.number == number })
+    trains.select { |train| train.number == number }
   end
 
   def self.inherited(subclass)
