@@ -23,7 +23,6 @@ module Validation
           send("validate_#{rule[:validation]}", attr_value, rule[:option])
         end
       end
-      true
     end
 
     def valid?

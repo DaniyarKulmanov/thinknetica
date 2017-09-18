@@ -6,7 +6,7 @@ require_relative 'validation'
 class Wagon
   include ProduceCompany
   include InstanceCounter
-  include Accessors
+  extend Accessors
   include Validation
 
   WAGON_TYPE = /Passenger|Cargo/

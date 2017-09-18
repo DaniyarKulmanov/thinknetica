@@ -6,7 +6,7 @@ require_relative 'validation'
 class Train
   include ProduceCompany
   include InstanceCounter
-  include Accessors
+  extend Accessors
   include Validation
 
   NAME_FORMAT = /^\S[\d a-zA-Z]*$/i
